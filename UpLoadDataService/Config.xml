@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Parameters>
+  <ConenctionString>Data Source=PC-500772\SQLEXPRESS;initial catalog=test1;user id=sa;password=1212;multipleactiveresultsets=True;App=EntityFramework</ConenctionString>
+  <!--(config)לא בשימוש. השתמשתי ב<Interval>300000</Interval>-->
+ <!-- <inventoryEnabled>N</inventoryEnabled>
+  <itemEnabled>N</itemEnabled>
+  <customerEnabled>N</customerEnabled>
+  <specialPriceEnabled>N</specialPriceEnabled>-->
+  <folderpath>c:\\temp\Hash</folderpath>
+  <Queries>
+  <Query myUrl="/importcsv">
+	
+    select * from customersTest
+
+  </Query>
+  <Query myUrl="/importcsv">
+	
+    select * from (
+    select
+    ID ,
+    AccountKey ,
+    FullName ,
+    SortGroup ,
+    Address ,
+    City ,
+    Zip ,
+    Country ,
+    Phone ,
+    Fax ,
+    MaxCredit,
+    Balance ,
+    TFtalDiscount ,
+    BankCode,
+    BranchCode,
+    BankAccount ,
+    TaxFileNum ,
+    ROW_NUMBER() OVER(ORDER BY ID ) as RowCnt,
+    Obligo , Agent from accounts ) as tmp where   RowCnt @CNT
+  
+  </Query>
+  <Query myUrl="/importcsv">
+	
+    select * from
+    (
+    select
+    items.itemkey,
+    items.price ,
+    ISNULL(priceLists.price  , 0 )as Minimumprice ,
+    ISNULL(discounts.DiscountPrc , items.discountprc ) AS ItemDiscount,
+    items.ItemName,
+    ROW_NUMBER() OVER(ORDER BY items.itemkey ) as RowCnt
+
+    from items
+    left outer join priceLists  on  priceLists.ItemKey  = items.ItemKey
+    and priceLists.PriceListNumber  = (select PriceListNames.PriceListID from PriceListNames where PriceListNames.PriceListName  = 'מחיר מינימום')
+    and priceLists.DatF = (select max(PL.DatF )  from  priceLists PL where PL.PriceListNumber = priceLists.PriceListNumber)
+    Left Outer Join discounts  on  items.Discountcode = discounts.ItemDiscountCode
+    where items.ItemName is not null
+    ) as tmp where RowCnt @CNT
+  
+  </Query>
+  <Query myUrl="/importcsv">
+	
+    select * from (
+    select
+    SpecialPrices.ItemKey ,
+    SpecialPrices.AccountKey,
+    SpecialPricesMoves.Price ,
+    SpecialPricesMoves.MinQuantity,
+    ROW_NUMBER() OVER(ORDER BY SpecialPrices.ItemKey  , SpecialPrices.AccountKey ) as RowCnt
+    from SpecialPrices
+    inner join  SpecialPricesMoves on SpecialPricesMoves.SPID = SpecialPrices.ID
+    ) as tmp where RowCnt @CNT
+ 
+  </Query>
+  <Query myUrl="/importcsv"> 	
+
+    select * from (
+    select Sum(QTY) as availableQTY ,
+    Warehouse , ItemKey ,
+    ROW_NUMBER() OVER(ORDER BY Warehouse , ItemKey) as RowCnt
+    from
+    (
+    select
+    StockMoves.ItemKey ,
+    StockMoves.SupplyQuantity ,
+    StockMoves.SupplyQuantity  * DocumentsDef.StockUpdate  as QTY ,
+    StockMoves.Warehouse ,
+    DocumentsDef.StockUpdate
+
+    from stock With(nolock)
+    inner join StockMoves With(nolock) on  stock.ID  = StockMoves.StockID
+    inner  join DocumentsDef With(nolock) on stockmoves.documentID = DocumentsDef.documentId
+    where StockMoves.Status = 1
+
+    ) As TmpTable
+
+    Group By ItemKey , Warehouse
+    ) as tmp where RowCnt @CNT
+ 
+  </Query>
+  <Query myUrl="/importcsv"> 
+
+    select
+    tmp.ID,
+    tmp.DocNumber,
+    tmp.AccountKey,
+    tmp.AccountName,
+    tmp.IssueDate,
+    StockMoves.ItemKey,
+    StockMoves.ItemName,
+    StockMoves.Quantity,
+    StockMoves.TFtal
+    from
+    (
+    select
+    stock.ID,
+    stock .DocNumber,
+    stock.AccountKey,
+    Stock.AccountName,
+    stock.IssueDate,
+    row_number() over(partition by stock.AccountKey order by stock.IssueDate  desc) as rn
+    from stock
+
+    where stock.DocumentID = 1
+
+    ) as tmp
+
+    inner join StockMoves on StockMoves.StockID = tmp.ID
+    where rn &lt;= 3
+    and AccountKey = '22019'
+    Order By tmp.IssueDate desc
+
+  </Query>
+  
+  
+  
+  
+  </Queries>
+  <procedures>
+  <procedure myUrl="/importcsv">getCustomers</procedure>
+  <procedure myUrl="/importcustomercards/exportcustomercards/importcsv">getCustomer2</procedure>
+  </procedures>
+  
+  <Name>shyamjoshi</Name>
+  <Pass>ricca8259</Pass>
+  <Url>https://decco-safepack.dira2.co.il/customers</Url>
+<!--  <Url>http://ganli.dira2.co.il</Url>-->
+</Parameters>
