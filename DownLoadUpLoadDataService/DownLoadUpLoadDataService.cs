@@ -34,7 +34,7 @@ namespace DownLoadUpLoadDataService
 
             //// Write an entry in the event log.
 
-            //eventLog.WriteEntry("orly checking", EventLogEntryType.Warning, 1001);
+            //eventLog.WriteEntry("Carmel\logs checking", EventLogEntryType.Warning, 1001);
             //System.Diagnostics.Debugger.Launch();
             System.ServiceProcess.ServiceBase[] ServicesToRun;
             ServicesToRun = new System.ServiceProcess.ServiceBase[] { new DownLoadUpLoadDataService() };
@@ -60,7 +60,7 @@ namespace DownLoadUpLoadDataService
             //System.Diagnostics.Debugger.Launch();          
             _hashEngine = new Engine();
             //EventLog eventLog = new EventLog();
-            File.AppendAllText(@"C:\Carmel\download.txt", "in on start" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\download.txt", "in on start" + Environment.NewLine);
 
             //eventLog.Source = "NewSource";
             //eventLog.WriteEntry("afterHashEngine", EventLogEntryType.Warning, 1001);

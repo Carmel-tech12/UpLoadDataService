@@ -10,6 +10,7 @@ using System.Xml;
 using System.Diagnostics;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Threading;
 using System.Xml.Linq;
 
 
@@ -69,12 +70,12 @@ namespace UpLoadDataService
             {
                 // doc.Load("Config.xml");
                 // doc.Load(@"C:\Program Files\UpLoadDataService\UpLoadDataService\bin\Debug\Config.xml");
-                File.AppendAllText(@"C:\orly\logUpload.txt", "try load pathxml" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "try load pathxml" + Environment.NewLine);
                 doc.Load(@"" + ConfigurationManager.AppSettings["pathXml"]);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "fail load pathxml" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail load pathxml" + Environment.NewLine);
                 EventManager.WriteEventErrorMessage("can not load the doc", ex);
             }
 
@@ -86,7 +87,7 @@ namespace UpLoadDataService
             m_folderpath = doc.SelectSingleNode(@"Parameters/folderpath").InnerText;
             ConnectionManager.ConnectionString = m_ConnectionString;
             ConnectionManager.Provider = doc.SelectSingleNode(@"Parameters/Provider").InnerText;
-            File.AppendAllText(@"C:\orly\logUpload.txt", "afterprovider" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "afterprovider" + Environment.NewLine);
             //   csv_file_path = ConfigurationManager.AppSettings["pathofcsvfile"].ToString();
 
         }
@@ -97,15 +98,15 @@ namespace UpLoadDataService
         //    try
         //    {
         //        DataSet dataSet = new DataSet();
-        //        File.AppendAllText(@"C:\orly\logUpload.txt", "in SendCallsForEmailsAndSMSs" + Environment.NewLine);
+        //        File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in SendCallsForEmailsAndSMSs" + Environment.NewLine);
         //        var command = "";
-                
+
 
 
         //    }
         //    catch(Exception ex)
         //    {
-        //        File.AppendAllText(@"C:\orly\logUpload.txt", "Failed SendCallsForEmailsAndSMSs ex: "+ ex + Environment.NewLine);
+        //        File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Failed SendCallsForEmailsAndSMSs ex: "+ ex + Environment.NewLine);
         //    }
 
         //    //עדכון סטטוס לשליחה= 2
@@ -123,7 +124,7 @@ namespace UpLoadDataService
 
                 string command;
                 XmlNodeList prodedursList = doc.GetElementsByTagName("procedure");  // XmlNodeList prodedursList = doc.GetElementsByTagName("Prodedurs");
-                //File.AppendAllText(@"C:\orly\logUpload.txt", "procedures found: " + prodedursList.ToString() + Environment.NewLine);
+                //File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "procedures found: " + prodedursList.ToString() + Environment.NewLine);
                 foreach (XmlNode pro in prodedursList)
                 {
                     //specificUrl contain the sequel of the url
@@ -179,9 +180,10 @@ namespace UpLoadDataService
                         try
                         {
                             string file = "";
-                            File.AppendAllText(@"C:\orly\logUpload.txt", "in try procedure, procedure: " + id + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Try procedure ::Date : " + DateTime.Now.ToString() + "procedure Number: " + id + Environment.NewLine);
                             if (command.Equals("sap"))
                             {
+                                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "toXML command ::Date : " + DateTime.Now.ToString() + "procedure Number: " + command + Environment.NewLine);
                                 toXml(command);
                                 file = @"C:\Carmel\sapNum.xml";
                                 //sapXml(specificUrl);
@@ -201,10 +203,10 @@ namespace UpLoadDataService
                             {
                                 DataSet dataSet = new DataSet();
                                 dataSet = ConnectionManager.GetDataForProcedures(command);
-                                File.AppendAllText(@"C:\orly\logUpload.txt", "before savefile procedure" + Environment.NewLine);
+                                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before savefile procedure" + Environment.NewLine);
 
                                 file = Savefile(ToCSV2(dataSet.Tables[0], ",", true), "from_Prodedure_" + command);
-                                File.AppendAllText(@"C:\orly\logUpload.txt", "after savefile procedure: " + command + Environment.NewLine);
+                                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after savefile procedure: " + command + Environment.NewLine);
                                 //string file = Savefile(ToCSV2(dataSet.Tables[0], ",", true), "from_Prodedure_" + DateTime.Now.ToFileTime() + ".csv");
                                 //my test//string file = @"C:\rooti\temp\hash\Procedur_131474298261702609.csv";
                             }
@@ -216,13 +218,15 @@ namespace UpLoadDataService
                                 //if success do login
                                 try
                                 {
+                                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Try upload file ::Date : " + DateTime.Now.ToString() + "procedure Number: " + id + Environment.NewLine);
+                                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Try upload file, the file is: " + file + " ::Date Now : " + DateTime.Now.ToString() + Environment.NewLine);
                                     //EventManager.WriteEventInfoMessage("try upload file");
                                     uploadfile(file, specificUrl);
                                     //EventManager.WriteEventInfoMessage("finish upload file");
                                 }
                                 catch (Exception ex)
                                 {
-                                    File.AppendAllText(@"C:\orly\logUpload.txt", "fail uploadfile ex: " + ex + Environment.NewLine);
+                                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail uploadfile ex: " + ex + Environment.NewLine);
                                     EventManager.WriteEventInfoMessage("cath upload file");
                                 }
                                 try
@@ -232,7 +236,7 @@ namespace UpLoadDataService
                                 }
                                 catch (Exception ex)
                                 {
-                                    File.AppendAllText(@"C:\orly\logUpload.txt", "fail do logOut ex: " + ex + Environment.NewLine);
+                                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail do logOut ex: " + ex + Environment.NewLine);
                                     EventManager.WriteEventInfoMessage("cath do loout");
                                 }
 
@@ -240,11 +244,15 @@ namespace UpLoadDataService
                             }
                             catch (Exception ex)
                             {
-                                File.AppendAllText(@"C:\orly\logUpload.txt", "fail login ex: " + ex + Environment.NewLine);
+                                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail login ex: " + ex + Environment.NewLine);
                                 EventManager.WriteEventErrorMessage("catch login", ex);
                             }
 
                             updateLastDate(id, n);
+
+                            //--commented By Raz and Yura 1/4/2019 -- update StatusFlag to 2 moved to the sap procedure----
+                            // UpdateCA_RequestDetails_temp();
+                            // UpdateCA_RequestLineDetails_temp();
 
                         }
                         catch (Exception ex)
@@ -259,7 +267,7 @@ namespace UpLoadDataService
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "fail LoadDataOfProcedurs, ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail LoadDataOfProcedurs, ex: " + ex + Environment.NewLine);
 
             }
         }
@@ -268,9 +276,9 @@ namespace UpLoadDataService
         #endregion
         public void sapXml(string specifyUrl)
         {
-            File.AppendAllText(@"C:\orly\logUpload.txt", "before sap" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before sap" + Environment.NewLine);
             uploadfile(@"C:\Carmel\sapNum.xml", specifyUrl);
-            File.AppendAllText(@"C:\orly\logUpload.txt", "after sap" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after sap" + Environment.NewLine);
 
         }
 
@@ -279,6 +287,8 @@ namespace UpLoadDataService
         DataSet dataSet;
         public void LoadDataOfQueries()
         {
+
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in LoadDataOfQueries::Date : " + DateTime.Now.ToString() + Environment.NewLine);
             try
             {
 
@@ -286,7 +296,7 @@ namespace UpLoadDataService
                 DataSet dataSet;
                 string command;
                 XmlNodeList QueriesList = doc.GetElementsByTagName("Query");  // XmlNodeList prodedursList = doc.GetElementsByTagName("Prodedurs");
-                //File.AppendAllText(@"C:\orly\logUpload.txt", "procedures found: " + QueriesList.ToString() + Environment.NewLine);                                       //EventManager.WriteEventInfoMessage("QueriesList");
+                //File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "procedures found: " + QueriesList.ToString() + Environment.NewLine);                                       //EventManager.WriteEventInfoMessage("QueriesList");
                 foreach (XmlNode pro in QueriesList)
                 {
                     command = pro.InnerText;
@@ -323,9 +333,12 @@ namespace UpLoadDataService
                     //}
 
                     string id = doc.SelectSingleNode(@"Parameters/ID/" + nView).InnerText;
+
+
                     //string temp = XmlNode.SelectSingleNode("field[@name='post_title']").InnerText;
                     command = pro.InnerText;
-
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "In LoadDataOfQueries, ID is: " + id + " ::Date Now : " + DateTime.Now.ToString() + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "In LoadDataOfQueries, the command is: " + command + " ::Date Now : " + DateTime.Now.ToString() + Environment.NewLine);
                     int timeInterval = int.Parse(doc.SelectSingleNode(@"Parameters/times/execute[@id =" + id + "]").InnerText);
 
                     DateTime last = getLastDate(id);
@@ -343,10 +356,10 @@ namespace UpLoadDataService
 
                             //DataSet dataSet = new DataSet();
                             dataSet = new DataSet();
-                            File.AppendAllText(@"C:\orly\logUpload.txt", "in try query, query: " + id + Environment.NewLine);
-                            File.AppendAllText(@"C:\orly\logUpload.txt", "before get data queries" + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in try query, query: " + id + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before get data queries" + Environment.NewLine);
                             dataSet = ConnectionManager.GetDataForQueries(command);
-                            File.AppendAllText(@"C:\orly\logUpload.txt", "after get data queries" + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after get data queries" + Environment.NewLine);
                             //string file = Savefile(ToCSV2(dataSet.Tables[0], ",", true), );
                             //by shira
 
@@ -357,7 +370,7 @@ namespace UpLoadDataService
                             }
                             catch (Exception ex)
                             {
-                                File.AppendAllText(@"C:\orly\logUpload.txt", "fail Save file, ex: " + ex + Environment.NewLine);
+                                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail Save file, ex: " + ex + Environment.NewLine);
                                 continue;
                             }
                             try
@@ -398,7 +411,7 @@ namespace UpLoadDataService
                         catch (Exception ex)
                         {
                             EventManager.WriteEventErrorMessage("Error while reading Query from China", ex);
-                            File.AppendAllText(@"C:\orly\logUpload.txt", "Error while reading Query from China, ex: " + ex + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Error while reading Query from China, ex: " + ex + Environment.NewLine);
                         }
                     }
 
@@ -406,15 +419,15 @@ namespace UpLoadDataService
 
                 }
 
-                
+
                 //עדכון סטטוס לשליחה= 2
-                UpdateCA_RequestDetails_temp();
-                UpdateCA_RequestLineDetails_temp();
+                //UpdateCA_RequestDetails_temp();
+                //UpdateCA_RequestLineDetails_temp();
             }
             catch (Exception ex)
             {
 
-                File.AppendAllText(@"C:\orly\logUpload.txt", "fail LoadDataOfQueries, ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "fail LoadDataOfQueries, ex: " + ex + Environment.NewLine);
             }
         }
 
@@ -423,12 +436,16 @@ namespace UpLoadDataService
         public void UpdateCA_RequestDetails_temp()
         {
 
-            File.AppendAllText(@"C:\orly\logUpload.txt", "in update requestDetails" + Environment.NewLine);
+
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in update requestDetails::Date : " + DateTime.Now.ToString() + Environment.NewLine);
             //https://stackoverflow.com/questions/15246182/sql-update-statement-in-c-sharp
             using (SqlConnection connection = new SqlConnection(m_ConnectionString))
             {
+
                 String st = "UPDATE CA_RequestDetails SET StatusFlag = " + 2 +
                      "WHERE StatusFlag = " + 1;
+                //String st = "UPDATE CA_RequestDetails SET StatusFlag = " + 1 +
+                //     "WHERE StatusFlag = " + 0;
 
                 SqlCommand sqlcom = new SqlCommand(st, connection);
                 try
@@ -439,19 +456,25 @@ namespace UpLoadDataService
                 }
                 catch (SqlException ex)
                 {
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "faile update requestDetails, ex: " + ex + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "faile update requestDetails, ex: " + ex + Environment.NewLine);
                     EventManager.WriteEventInfoMessage("Update CA_RequestDetails_temp failed" + ex.Message);
                 }
                 connection.Close();
-                File.AppendAllText(@"C:\orly\logUpload.txt", "after update requestDetails" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "After update requestLineDetails::Date : " + DateTime.Now.ToString() + Environment.NewLine);
             }
         }
         public void UpdateCA_RequestLineDetails_temp()
         {
+
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in update requestLineDetails::Date : " + DateTime.Now.ToString() + Environment.NewLine);
             using (SqlConnection connection = new SqlConnection(m_ConnectionString))
             {
+
                 String st = "UPDATE CA_RequestLineDetails SET StatusFlag = " + 2 +
                      "WHERE StatusFlag = " + 1;
+
+                //String st = "UPDATE CA_RequestDetails SET StatusFlag = " + 1 +
+                //     "WHERE StatusFlag = " + 0;
 
                 SqlCommand sqlcom = new SqlCommand(st, connection);
                 try
@@ -464,6 +487,8 @@ namespace UpLoadDataService
                 {
                     EventManager.WriteEventInfoMessage("Update CA_RequestLineDetails_temp failed" + ex.Message);
                 }
+
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "After update requestLineDetails::Date : " + DateTime.Now.ToString() + Environment.NewLine);
                 connection.Close();
             }
         }
@@ -471,6 +496,10 @@ namespace UpLoadDataService
         //add by orly
         public void toXml(string commandName)
         {
+
+
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Start of Function toXml ::Date : " + DateTime.Now.ToString() + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "toXml, command: " + commandName + Environment.NewLine);
             string connStr = @"" + m_ConnectionString;//.Substring(pos, m_ConnectionString.Length -pos - 1 );
             SqlConnection connection;
             SqlDataAdapter adapter;
@@ -480,51 +509,85 @@ namespace UpLoadDataService
             connection.Open();
             SqlCommand cmd = new SqlCommand(commandName, connection);
             cmd.CommandType = CommandType.StoredProcedure;
+
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "toXml, connectionstring: " + connStr + Environment.NewLine);
             //cmd.Parameters.Add(new SqlParameter("@CustomerID", custId));
 
             //System.Xml.XmlReader myXmlReader = cmd.ExecuteXmlReader();
             //System.Xml.XmlReader myXmlReader = cmd.ExecuteXmlReader();
-            using (XmlReader reader = cmd.ExecuteXmlReader())
+            try
             {
-                XmlDocument dom = new XmlDocument();
-                dom.CreateXmlDeclaration("1.0", "UTF-8", null);
+                using (XmlReader reader = cmd.ExecuteXmlReader())
+                {
 
-                dom.Load(reader);
-                //dom.Declaration = new XDeclaration("1.0", "utf-8", null);
+                    XmlDocument dom = new XmlDocument();
 
-                var settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.OmitXmlDeclaration = true;
-                settings.Encoding = Encoding.UTF8;
 
-                //changed by Raz 28/1/2019
-                //if (commandName.Equals("sap"))
-                //{
+                    dom.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+                    dom.Load(reader);
+                    //dom.Declaration = new XDeclaration("1.0", "utf-8", null);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "dom: " + dom.ToString() + ";;; date: " + DateTime.Now.ToString() + Environment.NewLine);
+                    var settings = new XmlWriterSettings();
+                    settings.Indent = true;
+                    settings.OmitXmlDeclaration = true;
+                    settings.Encoding = Encoding.UTF8;
+
+
+                    //adding sapNum back upadded by Yura carmel-tech 14.3.19
+                    if (dom.ChildNodes.Count > 0)
+                    {
+                        using (var writer = XmlTextWriter.Create(@"C:\Carmel\SapNumXmlBackUps\" + "SapNumBackUp" + "-" + DateTime.Now.Date.ToString("dd_MM_yyy") + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + ".xml", settings))
+                        {
+                            dom.WriteContentTo(writer);
+                        }
+                    }
+                    else
+                    {
+                        File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "sapXml is empty; date: " + DateTime.Now.ToString() + Environment.NewLine);
+                    }
+                    //try
+                    //{
+                    //    File.WriteAllText(@"C:\Carmel\SapNumXmlBackUps\" + "SapNumBackUp" + "-" + DateTime.Now.Date.ToString("dd_MM_yyy") + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + ".xml", sapXmlBackUpDoc.InnerXml);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    File.AppendAllText(@"C:\carmel\sapNumBackError.txt", "fail save backup Xml Sap" + ex + Environment.NewLine);
+                    //}
+                    //changed by Raz 28/1/2019
+                    //if (commandName.Equals("sap"))
+                    //{
                     using (var writer = XmlTextWriter.Create(@"C:\Carmel\sapNum.xml", settings))
                     {
                         dom.WriteContentTo(writer);
                     }
-                //}
-                //else if(commandName.Equals("workCards"))
-                //{
-                //    using (var writer = XmlTextWriter.Create(@"C:\Carmel\workCards.xml", settings))
-                //    {
-                //        dom.WriteContentTo(writer);
-                //    }
-                //}
-                
+                    //}
+                    //else if(commandName.Equals("workCards"))
+                    //{
+                    //    using (var writer = XmlTextWriter.Create(@"C:\Carmel\workCards.xml", settings))
+                    //    {
+                    //        dom.WriteContentTo(writer);
+                    //    }
+                    //}
 
+
+                    //reader.close();
+                }
                 //reader.close();
+                //myXmlReader.Close();
+                //return myXmlReader;
+                connection.Close();
             }
-            //reader.close();
-            //myXmlReader.Close();
-            //return myXmlReader;
-            connection.Close();
+            catch (Exception ex)
+            {
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "faild to create sapXml; date: " + DateTime.Now.ToString() + " ex: " + ex + Environment.NewLine);
+
+            }
         }
 
         public string ToCSV2(DataTable table, string delimiter, bool includeHeader)
         {
-            File.AppendAllText(@"C:\orly\logUpload.txt", "in ToCSV2" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in ToCSV2" + Environment.NewLine);
             var result = new StringBuilder();
 
             if (includeHeader)
@@ -536,9 +599,9 @@ namespace UpLoadDataService
                 }
 
                 result.Remove(--result.Length, 0);
-                File.AppendAllText(@"C:\orly\logUpload.txt", "before ToCSV2 append" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before ToCSV2 append" + Environment.NewLine);
                 result.Append(Environment.NewLine);
-                File.AppendAllText(@"C:\orly\logUpload.txt", "after ToCSV2 append" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after ToCSV2 append" + Environment.NewLine);
             }
 
             foreach (DataRow row in table.Rows)
@@ -571,7 +634,7 @@ namespace UpLoadDataService
 
         private string Savefile(string text, string nameFile)
         {
-            File.AppendAllText(@"C:\orly\logUpload.txt", "in saveFile" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in saveFile" + Environment.NewLine);
             bool folderExists = Directory.Exists(m_folderpath);
             if (!folderExists)
                 Directory.CreateDirectory(m_folderpath);
@@ -595,7 +658,7 @@ namespace UpLoadDataService
 
         //private string SaveXml(string text, string nameFile)
         //{
-        //    File.AppendAllText(@"C:\orly\logUpload.txt", "in saveFile" + Environment.NewLine);
+        //    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in saveFile" + Environment.NewLine);
         //    bool folderExists = Directory.Exists(m_folderpath);
         //    if (!folderExists)
         //        Directory.CreateDirectory(m_folderpath);
@@ -692,11 +755,11 @@ namespace UpLoadDataService
                     StreamReader reader2 = new StreamReader(stream2);
                     string responseData = reader2.ReadToEnd();
                     //EventManager.WriteEventInfoMessage("response is:\n" + responseData);
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "GetResponse for url: " + specificUrl + "; resp: " + responseData + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "GetResponse for url: " + specificUrl + "; resp: " + responseData + Environment.NewLine);
                 }
                 catch (Exception ex)
                 {
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "failed GetResponse for url: "+ specificUrl + "; ex: " + ex + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "failed GetResponse for url: " + specificUrl + "; ex: " + ex + Environment.NewLine);
                 }
                 finally
                 {
@@ -711,7 +774,7 @@ namespace UpLoadDataService
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "failed upload file ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "failed upload file ex: " + ex + Environment.NewLine);
             }
 
         }
@@ -753,11 +816,11 @@ namespace UpLoadDataService
             }
             catch (WebException we)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "login failed ex: " + we + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "login failed ex: " + we + Environment.NewLine);
             }
             catch (Exception we)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "login failed ex: " + we + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "login failed ex: " + we + Environment.NewLine);
             }
             //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             //response.Cookies = request.CookieContainer.GetCookies(request.RequestUri);
@@ -782,11 +845,11 @@ namespace UpLoadDataService
             }
             catch (WebException we)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "logout failed ex: " + we + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "logout failed ex: " + we + Environment.NewLine);
             }
             catch (Exception we)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "logout failed ex: " + we + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "logout failed ex: " + we + Environment.NewLine);
             }
 
         }
@@ -794,8 +857,8 @@ namespace UpLoadDataService
         public DateTime getLastDate(string pName)
         {
             DateTime d = new DateTime();
-
-            //File.AppendAllText(@"C:\orly\logUpload.txt", "in update requestDetails" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "In getLastDate, ID is: " + pName + " ::Date Now : " + DateTime.Now.ToString() + Environment.NewLine);
+            //File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in update requestDetails" + Environment.NewLine);
             //https://stackoverflow.com/questions/15246182/sql-update-statement-in-c-sharp
             using (SqlConnection connection = new SqlConnection(m_ConnectionString))
             {
@@ -818,11 +881,11 @@ namespace UpLoadDataService
                 }
                 catch (SqlException ex)
                 {
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "faile select allTables" + ex.Message + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "faile select allTables" + ex.Message + Environment.NewLine);
                     //EventManager.WriteEventInfoMessage("Update allTables failed" + ex.Message);
                 }
                 connection.Close();
-                File.AppendAllText(@"C:\orly\logUpload.txt", "after getLastDate" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after getLastDate" + Environment.NewLine);
                 return d;
             }
         }
@@ -831,8 +894,7 @@ namespace UpLoadDataService
         {
             DateTime d = new DateTime();
             d = DateTime.Now;
-
-            File.AppendAllText(@"C:\orly\logUpload.txt", "in update last date, id: " + pName + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "In updateLastDate, ID is: " + pName + " ::Date Now : " + DateTime.Now.ToString() + Environment.NewLine);
             //https://stackoverflow.com/questions/15246182/sql-update-statement-in-c-sharp
             using (SqlConnection connection = new SqlConnection(m_ConnectionString))
             {
@@ -857,11 +919,11 @@ namespace UpLoadDataService
                 }
                 catch (SqlException ex)
                 {
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "faile update last date allTables" + ex.Message + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "faile update last date allTables" + ex.Message + Environment.NewLine);
                     //EventManager.WriteEventInfoMessage("Update date allTables failed" + ex.Message);
                 }
                 connection.Close();
-                File.AppendAllText(@"C:\orly\logUpload.txt", "after updateLastDate, id: " + pName + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after updateLastDate, id: " + pName + Environment.NewLine);
                 //return d;
             }
         }

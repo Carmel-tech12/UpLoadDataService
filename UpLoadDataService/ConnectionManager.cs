@@ -101,17 +101,21 @@ namespace UpLoadDataService
             string connStr = m_ConnectionString + "Provider=" + provider + ";";
             using (System.Data.OleDb.OleDbConnection connection = new System.Data.OleDb.OleDbConnection(connStr))
             {
+                
                 string queryString = command;
                 OleDbDataAdapter adapter = new OleDbDataAdapter(queryString, connection);
 
                 connection.Open();
                 try
                 {
+                    //adapter.SelectCommand.CommandTimeout = 999999999;
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before adapter.Fill ::Date : " + DateTime.Now.ToString() + "Query name: " + command + Environment.NewLine);
                     adapter.Fill(dataSet);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after adapter.Fill" + Environment.NewLine);
                 }
                 catch (Exception ex)
                 {
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "Error happened while open connection to db" + Environment.NewLine + "commend: " + queryString + Environment.NewLine + "conString: " + connStr + Environment.NewLine + "conn: " + connection.ToString() + Environment.NewLine + "ex: " + ex + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Error happened while open connection to db" + Environment.NewLine + "commend: " + queryString + Environment.NewLine + "conString: " + connStr + Environment.NewLine + "conn: " + connection.ToString() + Environment.NewLine + "ex: " + ex + Environment.NewLine);
                     EventManager.WriteEventErrorMessage("Error happened while open connection to db", ex);
 
                 }
@@ -124,7 +128,7 @@ namespace UpLoadDataService
 
         public static DataSet GetDataForProcedures(string commandName)
         {
-            File.AppendAllText(@"C:\orly\logUpload.txt", "in , commend: GetDataForProcedures, comm: " + commandName + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "in , commend: GetDataForProcedures, comm: " + commandName + Environment.NewLine);
             DataSet dataSet = new DataSet();
             //int pos = m_ConnectionString.IndexOf("DSN");
             string connStr = @"" + m_ConnectionString;//.Substring(pos, m_ConnectionString.Length -pos - 1 );
@@ -133,30 +137,31 @@ namespace UpLoadDataService
             SqlCommand command = new SqlCommand();
             connection = null;
             connection = new SqlConnection(connStr);
-            File.AppendAllText(@"C:\orly\logUpload.txt", "after declare connection" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after declare connection" + Environment.NewLine);
             connection.Open();
-            File.AppendAllText(@"C:\orly\logUpload.txt", "after open connection" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after open connection" + Environment.NewLine);
             command.Connection = connection;
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = commandName;
             command.CommandTimeout = 999999999;
-            File.AppendAllText(@"C:\orly\logUpload.txt", "after connection params" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after connection params" + Environment.NewLine);
             adapter = new SqlDataAdapter(command);
-            File.AppendAllText(@"C:\orly\logUpload.txt", "after declare adapter" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after declare adapter" + Environment.NewLine);
             try
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "before adapter.Fill" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before adapter.Fill ::Date : " + DateTime.Now.ToString() + "procedure name: " + commandName + Environment.NewLine);
+                //adapter.SelectCommand.CommandTimeout = 999999999;
                 adapter.Fill(dataSet);
-                File.AppendAllText(@"C:\orly\logUpload.txt", "after adapter.Fill" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after adapter.Fill" + Environment.NewLine);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "Error happened while open connection to db, commend: " + command + " ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "Error happened while open connection to db, commend: " + command + " ex: " + ex + Environment.NewLine);
                 EventManager.WriteEventErrorMessage("Error happened while reading data from China", ex);
             }
-            File.AppendAllText(@"C:\orly\logUpload.txt", "before close connection" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before close connection" + Environment.NewLine);
             connection.Close();
-            File.AppendAllText(@"C:\orly\logUpload.txt", "after close connection" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after close connection" + Environment.NewLine);
 
             return dataSet;
         }

@@ -41,7 +41,7 @@ namespace UpLoadDataService
         {            
             try
             {
-                File.AppendAllText(@"C:\orly\logUpload.txt", "try load hour" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "try load hour" + Environment.NewLine);
                 hour = ConfigurationManager.AppSettings["hour"].ToString();
                 minute = ConfigurationManager.AppSettings["Minute"].ToString();
             }
@@ -53,7 +53,7 @@ namespace UpLoadDataService
             degelStart = true;
             degel = true;
             //System.Diagnostics.Debugger.Launch(); 
-            File.AppendAllText(@"C:\orly\logUpload.txt", "before new hashengine" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before new hashengine" + Environment.NewLine);
             _hashEngine = new Engine();
             runCommands_timer.Interval = 1000 * 60  ;
             runCommands_timer.AutoReset = true;
@@ -82,9 +82,9 @@ namespace UpLoadDataService
                     runCommands_timer.Stop();
                     //Sets the timer to start working when it reaches real time according to time in app.config
                     //EventManager.WriteEventInfoMessage("start while");
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "before while" + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before while" + Environment.NewLine);
                     while ((DateTime.Now.Hour.ToString() != hour|| DateTime.Now.Minute.ToString() != minute)) { }
-                    File.AppendAllText(@"C:\orly\logUpload.txt", "after while" + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "after while" + Environment.NewLine);
                     //EventManager.WriteEventInfoMessage("finish while");
                     degelStart = false;
                     runCommands_timer.Interval = 1000 * 60  ;
@@ -110,7 +110,7 @@ namespace UpLoadDataService
         void ReadAllProcedures()
         {
             //EventManager.WriteEventInfoMessage("start read all procerures");
-            File.AppendAllText(@"C:\orly\logUpload.txt", "before proceduress" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before proceduress" + Environment.NewLine);
             //System.Diagnostics.Debugger.Launch();
             _hashEngine.LoadDataOfProcedurs();
             //EventManager.WriteEventInfoMessage("finish read all procerures");
@@ -119,7 +119,7 @@ namespace UpLoadDataService
         void ReadAllQueries()
         {
             //EventManager.WriteEventInfoMessage("start read all queries");
-            File.AppendAllText(@"C:\orly\logUpload.txt", "before queries" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\logUpload.txt", "before queries" + Environment.NewLine);
             _hashEngine.LoadDataOfQueries();
             //EventManager.WriteEventInfoMessage("finish read all queries");
         }

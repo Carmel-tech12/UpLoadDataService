@@ -47,19 +47,19 @@ namespace DownLoadUpLoadDataService
             {
                 // doc.Load("Config.xml");
                 // doc.Load(@"C:\Program Files\UpLoadDataService\UpLoadDataService\bin\Debug\Config.xml");
-                File.AppendAllText(@"C:\carmel\download.txt", "try load pathXml" + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "try load pathXml" + Environment.NewLine);
                 doc.Load(@"" + ConfigurationManager.AppSettings["pathXml"]);
-                File.AppendAllText(@"C:\carmel\download.txt", "success load pathXml" + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "success load pathXml" + Environment.NewLine);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\carmel\download.txt", "fail load pathXml" + ex.Message + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "fail load pathXml" + ex.Message + Environment.NewLine);
                 //EventManager.WriteEventErrorMessage("can not load the doc", ex);
             }
             try
             {
 
-                File.AppendAllText(@"C:\carmel\download.txt", "before parameters" + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "before parameters" + Environment.NewLine);
                 m_ConnectionString = doc.SelectSingleNode(@"Parameters/ConenctionString").InnerText + "&quot;";
                 m_user = doc.SelectSingleNode(@"Parameters/Name").InnerText;
                 m_pass = doc.SelectSingleNode(@"Parameters/Pass").InnerText;
@@ -73,11 +73,11 @@ namespace DownLoadUpLoadDataService
                 ConnectionManager.ConnectionString = m_ConnectionString;
                 ConnectionManager.Provider = doc.SelectSingleNode(@"Parameters/Provider").InnerText;
                 csv_file_path = ConfigurationManager.AppSettings["pathofcsvfile"].ToString();
-                File.AppendAllText(@"C:\carmel\download.txt", "after parameters" + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "after parameters" + Environment.NewLine);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\carmel\download.txt", "fail parameters, ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "fail parameters, ex: " + ex + Environment.NewLine);
             }
         }
         public static bool degel = true;
@@ -85,29 +85,29 @@ namespace DownLoadUpLoadDataService
         {
             try
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "enter InsertIntoSp" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "enter InsertIntoSp" + Environment.NewLine);
                 //EventManager.WriteEventInfoMessage("start ReadXml");
                 // DataTable tblML = ConvertToDataTableML(csv_file_path, 25);
-                File.AppendAllText(@"C:\Carmel\download.txt", "before ReadXmlForCA_RequestDetails" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "before ReadXmlForCA_RequestDetails" + Environment.NewLine);
                 DataTable tblML = ReadXmlForCA_RequestDetails();
                 // EventManager.WriteEventInfoMessage("finish ConvertToDataTable ML from TxtFile");
-                File.AppendAllText(@"C:\Carmel\download.txt", "after ReadXmlForCA_RequestDetails" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "after ReadXmlForCA_RequestDetails" + Environment.NewLine);
                 //EventManager.WriteEventInfoMessage("start insert the data to PsRequestDetails from xml");
 
-                File.AppendAllText(@"C:\Carmel\download.txt", "before AddIntoPsRequestDetails" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "before AddIntoPsRequestDetails" + Environment.NewLine);
                 AddIntoPsRequestDetails(tblML);
-                File.AppendAllText(@"C:\Carmel\download.txt", "after AddIntoPsRequestDetails" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "after AddIntoPsRequestDetails" + Environment.NewLine);
                 //EventManager.WriteEventInfoMessage("finish insert the data to PsRequestDetails from xml");
 
                 //need to open zip file here and extract
-                File.AppendAllText(@"C:\Carmel\download.txt", "before zipFiles" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "before zipFiles" + Environment.NewLine);
                 zipFiles("");
-                File.AppendAllText(@"C:\Carmel\download.txt", "after zipFiles" + Environment.NewLine);
-                File.AppendAllText(@"C:\Carmel\download.txt", "end InsertIntoSp" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "after zipFiles" + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "end InsertIntoSp" + Environment.NewLine);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail InsertIntoSp ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail InsertIntoSp ex: " + ex + Environment.NewLine);
             }
             //  EventManager.WriteEventInfoMessage("start ConvertToDataTable CL from TxtFile");
             //DataTable tblCL = ConvertToDataTableCL(csv_file_path, 11);
@@ -263,15 +263,15 @@ namespace DownLoadUpLoadDataService
                 //xmlDoc.Load(@"C:\Users\Doctor\Desktop\noLine.xml");
                 //xmlDoc.Load(@"C:\Users\Doctor\Desktop\integrationFile.xml");
                 //xmlDoc.Load(@"C:\Users\Doctor\Desktop\2LINES.xml");
-                File.AppendAllText(@"C:\carmel\download.txt", "before load Xml" + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "before load Xml" + Environment.NewLine);
                 xmlDoc.LoadXml(get);
-                File.AppendAllText(@"C:\carmel\download.txt", "after load xml" + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "after load xml" + Environment.NewLine);
                 File.WriteAllText(@"C:\Carmel\linkXml.xml", xmlDoc.InnerXml);
 
             }
             catch (Exception exs)
             {
-                File.AppendAllText(@"C:\carmel\download.txt", "fail load Xml" + exs.Message + Environment.NewLine);
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "fail load Xml::Date: " + DateTime.Now.ToString() + "; ex:" + exs.Message + Environment.NewLine);
                 //EventManager.WriteEventErrorMessage("failed to loadxml", exs);
             }
             //XmlNodeList nodeList = xmlDoc.GetElementsByTagName("item");
@@ -288,8 +288,11 @@ namespace DownLoadUpLoadDataService
             DataRow dr, drLine;
             //מתבצעת ריצה על סוג בקשה בקריאה
             DataTable dtLine = new DataTable();
-            for (int col = 0; col < 10; col++)
+            for (int col = 0; col < 11; col++)
                 dtLine.Columns.Add(new DataColumn("Column" + (col + 1).ToString()));
+
+            File.AppendAllText(@"C:\carmel\logs\download.txt", "bEFORE FOREACH XMLNODE ::Date: " + DateTime.Now.ToString() + Environment.NewLine);
+
 
             foreach (XmlNode node in nodeList)
             {
@@ -302,7 +305,7 @@ namespace DownLoadUpLoadDataService
                 }
                 catch (Exception ex)
                 {
-                    File.AppendAllText(@"C:\carmel\download.txt", "fail save backup Xml" + ex + Environment.NewLine);
+                    File.AppendAllText(@"C:\carmel\logs\download.txt", "fail save backup Xml" + ex + Environment.NewLine);
                 }
                 //cancelReq = node.SelectSingleNode("Cancel").InnerText;
                 //if (cancelReq.Equals("1"))
@@ -314,7 +317,7 @@ namespace DownLoadUpLoadDataService
                 // XmlNodeList nodeListline = xmlDoc.GetElementsByTagName("orderline");
 
                 XmlNodeList nodeListline = node.SelectNodes("CA_RequestLineDetails"); //  can also use XPath here
-
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "before nodeline ::Date: " + DateTime.Now.ToString() + Environment.NewLine);
                 foreach (XmlNode nodeline in nodeListline)
                 {
 
@@ -323,18 +326,24 @@ namespace DownLoadUpLoadDataService
                     {
 
                         // string idreq = "", product_id = "", quantity = "", prodname = "", issue_type = "", status = "", item_key = "";
-                        string LineId = "", ItemCode = "", Qntty = "", RequestSttsline = "", RejectRsn = "", BillTo = "", InternalNotesline = "", cancelLine = "", statusFlagLine = "", SpclApprvl = "";
+                        string LineId = "", ItemCode = "", Qntty = "", RequestSttsline = "", RejectRsn = "", BillTo = "", InternalNotesline = "", cancelLine = "", statusFlagLine = "", SpclApprvl = "", TimeStamp = "";
                         LineId = nodeli.SelectSingleNode("LineId").InnerText;
                         RequestSttsline = nodeli.SelectSingleNode("RequestStts").InnerText;
                         statusFlagLine = nodeli.SelectSingleNode("StatusFlag").InnerText;
                         //cancelLine = nodeli.SelectSingleNode("Cancel").InnerText;
                         //if (statusFlagLine.Equals("1") && RequestSttsline.Equals("5"))
+                        File.AppendAllText(@"C:\carmel\logs\download.txt", "before if for statusflag Xml::Date: " + DateTime.Now.ToString() + Environment.NewLine);
                         if (statusFlagLine.Equals("0") && RequestSttsline.Equals("5"))
                         {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "SEND TO DELETE LINE" + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "SEND TO DELETE LINE ::Date : " + DateTime.Now.ToString() + Environment.NewLine);
                             deleteLine(ReqNo, LineId);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "after deleteLine ::Date : " + DateTime.Now.ToString() + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "RequestSttsline : " + RequestSttsline + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "statusFlagLine : " + statusFlagLine + Environment.NewLine);
                             continue;
                         }
+
+                        File.AppendAllText(@"C:\carmel\logs\download.txt", "after if status flag::Date: " + DateTime.Now.ToString() + Environment.NewLine);
                         ItemCode = nodeli.SelectSingleNode("ItemCode").InnerText;
                         Qntty = nodeli.SelectSingleNode("Qntty").InnerText;
                         //RequestSttsline = nodeli.SelectSingleNode("RequestStts").InnerText;
@@ -342,7 +351,12 @@ namespace DownLoadUpLoadDataService
                         BillTo = nodeli.SelectSingleNode("BillTo").InnerText;
                         InternalNotesline = nodeli.SelectSingleNode("InternalNotes").InnerText;
                         SpclApprvl = nodeli.SelectSingleNode("SpclApprvl").InnerText;
+                        TimeStamp = nodeli.SelectSingleNode("TimeStamp").InnerText;
 
+
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "before insert to drLine ::Date : " + DateTime.Now.ToString() + Environment.NewLine);
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "RequestSttsline : " + RequestSttsline + Environment.NewLine);
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "statusFlagLine : " + statusFlagLine + Environment.NewLine);
                         drLine = dtLine.NewRow();
                         //הכנסת נתונים לטבלה
                         drLine[0] = ReqNo;
@@ -355,6 +369,7 @@ namespace DownLoadUpLoadDataService
                         drLine[7] = InternalNotesline;
                         drLine[8] = statusFlagLine;
                         drLine[9] = SpclApprvl;
+                        drLine[10] = TimeStamp;
                         dtLine.Rows.Add(drLine);
                     }
                 }
@@ -413,9 +428,9 @@ namespace DownLoadUpLoadDataService
 
             //eventLog.Source = "NewSource";
             // eventLog.WriteEntry("beforeRequestLineDetails", EventLogEntryType.Warning, 1001);
-            File.AppendAllText(@"C:\Carmel\download.txt", "before CA_RequestLineDetailsPs" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\download.txt", "before CA_RequestLineDetailsPs" + Environment.NewLine);
             CA_RequestLineDetailsPs(dtLine);
-            File.AppendAllText(@"C:\Carmel\download.txt", "after CA_RequestLineDetailsPs" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\download.txt", "after CA_RequestLineDetailsPs" + Environment.NewLine);
             //InsertToFiles(dtLine);
             return dt;
         }
@@ -820,7 +835,7 @@ namespace DownLoadUpLoadDataService
                         {
 
                             con.Close();
-                            File.AppendAllText(@"C:\Carmel\download.txt", "done AddIntoPsRequestDetails" + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "done AddIntoPsRequestDetails" + Environment.NewLine);
                         }
                         catch (Exception e)
                         {
@@ -908,229 +923,257 @@ namespace DownLoadUpLoadDataService
         //}
         public static void AddIntoPsRequestLineDetails(DataTable dt, int NumOfRow)
         {
-            EventLog eventLog = new EventLog();
-
-            eventLog.Source = "NewSource";
-            //eventLog.WriteEntry("in RequestLineDetails", EventLogEntryType.Warning, 1001);
-            int i, count = dt.Rows.Count;
-            //פרמטרים של טבלת CA_RequestLineDetails
-            float Qntty;
-            int ReqNo, LineId, BillTo, JCNum, StatusFlag, Docentry, SBOLineId;
-            string ItemCode, RequestStts, RejectRsn, RjctMsg, FileName, InternalNotes, SpclApprvl;
-            DateTime Timestamp, AddTime;
-            i = count - NumOfRow;
-            count = NumOfRow;
-            while (dt.Rows.Count > 0 && count > 0)
+            try
             {
-                count--;
-                DataRow row = dt.Rows[i++];
-                ReqNo = int.Parse(row[0].ToString());
-                LineId = int.Parse(row[1].ToString());
-                ItemCode = row[2].ToString();
-                Qntty = float.Parse(row[3].ToString());
-                RequestStts = row[4].ToString();
-                RejectRsn = row[5].ToString();
+
+                EventLog eventLog = new EventLog();
+
                 eventLog.Source = "NewSource";
-                //eventLog.WriteEntry("before billto", EventLogEntryType.Warning, 1001);
-                try
+                //eventLog.WriteEntry("in RequestLineDetails", EventLogEntryType.Warning, 1001);
+                int i, count = dt.Rows.Count;
+                //פרמטרים של טבלת CA_RequestLineDetails
+                float Qntty;
+                int ReqNo, LineId, BillTo, JCNum, StatusFlag, Docentry, SBOLineId;
+                string ItemCode, RequestStts, RejectRsn, RjctMsg, FileName, InternalNotes, SpclApprvl;
+                DateTime Timestamp, AddTime;
+                i = count - NumOfRow;
+                count = NumOfRow;
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "AddIntoPsRequestLineDetails: " + DateTime.Now.ToString() + Environment.NewLine);
+                while (dt.Rows.Count > 0 && count > 0)
                 {
-                    BillTo = int.Parse(row[6].ToString());
-                }
-                catch
-                {
-                    BillTo = 0;
-                }
-                //BillTo = int.Parse(row[6].ToString());
-                InternalNotes = row[7].ToString();
-                eventLog.Source = "NewSource";
-                //eventLog.WriteEntry("afterbillto", EventLogEntryType.Warning, 1001);
-                /*  JCNum = int.Parse(row[7].ToString());
-                        RjctMsg = row[8].ToString();*/
-                StatusFlag = int.Parse(row[8].ToString());
-                SpclApprvl = row[9].ToString();
-                // Timestamp = DateTime.Parse(row[10].ToString());
-                //   Docentry=int.Parse(row[7].ToString());
-                //SBOLineId=int.Parse(row[8].ToString());
-                using (SqlConnection con = new SqlConnection(m_ConnectionString))
-                {
-                    using (SqlCommand cmd = new SqlCommand("RequestLineDetails", con))
+                    count--;
+                    DataRow row = dt.Rows[i++];
+                    ReqNo = int.Parse(row[0].ToString());
+                    LineId = int.Parse(row[1].ToString());
+                    ItemCode = row[2].ToString();
+                    Qntty = float.Parse(row[3].ToString());
+                    RequestStts = row[4].ToString();
+                    RejectRsn = row[5].ToString();
+                    eventLog.Source = "NewSource";
+                    //eventLog.WriteEntry("before billto", EventLogEntryType.Warning, 1001);
+                    try
                     {
-                        try
+                        BillTo = int.Parse(row[6].ToString());
+                    }
+                    catch
+                    {
+                        BillTo = 0;
+                    }
+                    //BillTo = int.Parse(row[6].ToString());
+                    InternalNotes = row[7].ToString();
+                    eventLog.Source = "NewSource";
+                    //eventLog.WriteEntry("afterbillto", EventLogEntryType.Warning, 1001);
+                    /*  JCNum = int.Parse(row[7].ToString());
+                            RjctMsg = row[8].ToString();*/
+                    StatusFlag = int.Parse(row[8].ToString());
+                    SpclApprvl = row[9].ToString();
+                    Timestamp = DateTime.Parse(row[10].ToString());
+                    //   Docentry=int.Parse(row[7].ToString());
+                    //SBOLineId=int.Parse(row[8].ToString());
+                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "Inside AddIntoPsRequestLineDetails ::Date : " + DateTime.Now.ToString() + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "RequestStts : " + RequestStts + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "StatusFlag : " + StatusFlag + Environment.NewLine);
+                    using (SqlConnection con = new SqlConnection(m_ConnectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("RequestLineDetails", con))
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.Add("@ReqNo", SqlDbType.Int).Value = ReqNo;
-                            cmd.Parameters.Add("@LineId", SqlDbType.Int).Value = LineId;
-                            cmd.Parameters.Add("@ItemCode", SqlDbType.NVarChar).Value = ItemCode;
-                            cmd.Parameters.Add("@Qntty", SqlDbType.Float).Value = Qntty;
-                            cmd.Parameters.Add("@RequestStts", SqlDbType.NVarChar).Value = RequestStts;
-                            cmd.Parameters.Add("@RejectRsn", SqlDbType.NVarChar).Value = RejectRsn;
-                            cmd.Parameters.Add("@BillTo", SqlDbType.Int).Value = BillTo;
-                            cmd.Parameters.Add("@InternalNotes", SqlDbType.NVarChar).Value = InternalNotes;
-                            /* cmd.Parameters.Add("@JCNum", SqlDbType.Int).Value = JCNum;
-                               cmd.Parameters.Add("@RjctMsg", SqlDbType.NVarChar).Value = RjctMsg;*/
-                            cmd.Parameters.Add("@StatusFlag", SqlDbType.Int).Value = StatusFlag;
-                            cmd.Parameters.Add("@SpclApprvl", SqlDbType.NVarChar).Value = SpclApprvl;
-                            // cmd.Parameters.Add("@Timestamp", SqlDbType.DateTime).Value = Timestamp;
-                            //cmd.Parameters.Add("@Docentry", SqlDbType.Int).Value = Docentry;
-                            //cmd.Parameters.Add("@SBOLineId", SqlDbType.Int).Value = SBOLineId;
-                        }
-                        catch (Exception e)
-                        {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "FAIL put values CA_RequestLineDetails table" + e + Environment.NewLine);
-                            //EventManager.WriteEventErrorMessage("failed to put values for CA_RequestLineDetails table", e);
+                            try
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.Add("@ReqNo", SqlDbType.Int).Value = ReqNo;
+                                cmd.Parameters.Add("@LineId", SqlDbType.Int).Value = LineId;
+                                cmd.Parameters.Add("@ItemCode", SqlDbType.NVarChar).Value = ItemCode;
+                                cmd.Parameters.Add("@Qntty", SqlDbType.Float).Value = Qntty;
+                                cmd.Parameters.Add("@RequestStts", SqlDbType.NVarChar).Value = RequestStts;
+                                cmd.Parameters.Add("@RejectRsn", SqlDbType.NVarChar).Value = RejectRsn;
+                                cmd.Parameters.Add("@BillTo", SqlDbType.Int).Value = BillTo;
+                                cmd.Parameters.Add("@InternalNotes", SqlDbType.NVarChar).Value = InternalNotes;
+                                /* cmd.Parameters.Add("@JCNum", SqlDbType.Int).Value = JCNum;
+                                   cmd.Parameters.Add("@RjctMsg", SqlDbType.NVarChar).Value = RjctMsg;*/
+                                cmd.Parameters.Add("@StatusFlag", SqlDbType.Int).Value = StatusFlag;
+                                cmd.Parameters.Add("@SpclApprvl", SqlDbType.NVarChar).Value = SpclApprvl;
+                                cmd.Parameters.Add("@Timestamp", SqlDbType.DateTime).Value = Timestamp;
+                                //cmd.Parameters.Add("@Docentry", SqlDbType.Int).Value = Docentry;
+                                //cmd.Parameters.Add("@SBOLineId", SqlDbType.Int).Value = SBOLineId;
+                            }
+                            catch (Exception e)
+                            {
+                                File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL put values CA_RequestLineDetails table::Date : " + DateTime.Now.ToString() + ";;" + e + Environment.NewLine);
+                                //EventManager.WriteEventErrorMessage("failed to put values for CA_RequestLineDetails table", e);
 
-                        }
-                        try
-                        {
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                        }
-                        catch (Exception e)
-                        {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "FAIL execute CA_RequestLineDetails table" + e + Environment.NewLine);
-                            //EventManager.WriteEventErrorMessage("failed to open ConnectionString for CA_RequestLineDetails table", e);
-                            //File.AppendAllText(@"C:\Carmel\download.txt", "FAIL execute CA_RequestLineDetails table" + e + Environment.NewLine);
-                        }
-                        try
-                        {
-                            con.Close();
-                            File.AppendAllText(@"C:\Carmel\download.txt", "done CA_RequestLineDetails table" + Environment.NewLine);
+                            }
+                            try
+                            {
+                                con.Open();
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (Exception e)
+                            {
+                                File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL execute CA_RequestLineDetails table::Date : " + DateTime.Now.ToString() + ";;" + e + Environment.NewLine);
+                                //EventManager.WriteEventErrorMessage("failed to open ConnectionString for CA_RequestLineDetails table", e);
+                                //File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL execute CA_RequestLineDetails table" + e + Environment.NewLine);
+                            }
+                            try
+                            {
+                                con.Close();
+                                File.AppendAllText(@"C:\Carmel\logs\download.txt", "done CA_RequestLineDetails table::Date : " + DateTime.Now.ToString() + Environment.NewLine);
 
-                        }
-                        catch (Exception e)
-                        {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "FAIL close CA_RequestLineDetails table" + e + Environment.NewLine);
-                            //EventManager.WriteEventErrorMessage("failed to close ConnectionString for CA_RequestLineDetails table", e);
-                            //File.AppendAllText(@"C:\Carmel\download.txt", "FAIL close CA_RequestLineDetails table" + e + Environment.NewLine);
+                            }
+                            catch (Exception e)
+                            {
+                                File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL close CA_RequestLineDetails table::Date : " + DateTime.Now.ToString() + ";;" + e + Environment.NewLine);
+                                //EventManager.WriteEventErrorMessage("failed to close ConnectionString for CA_RequestLineDetails table", e);
+                                //File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL close CA_RequestLineDetails table" + e + Environment.NewLine);
+                            }
                         }
                     }
+
+
                 }
-
-
+            }
+            catch (Exception e)
+            {
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL AddIntoPsRequestLineDetails table::Date : " + DateTime.Now.ToString() + ";;" + e + Environment.NewLine);
+                //EventManager.WriteEventErrorMessage("failed to close ConnectionString for CA_RequestLineDetails table", e);
+                //File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL close CA_RequestLineDetails table" + e + Environment.NewLine);
             }
         }
         public static void CA_RequestLineDetailsPs(DataTable dt)
         {
-            int count = dt.Rows.Count, mone = 0;
-            string connectionString = m_ConnectionString;
-            // https://stackoverflow.com/questions/9648934/insert-into-if-not-exists-sql-server
-            /* string insertQuery = " IF NOT EXISTS (select * from CA_RequestLineDetails_temp where ReqNo = @ReqNo) \n\r" +
-                " BEGIN \n\r" +
-                "     INSERT into CA_RequestLineDetails_temp(ReqNo,LineId,ItemCode,Qntty,RequestStts,RejectRsn,BillTo) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts,@RejectRsn,@BillTo) \n\r" +
-                " END \n\r " +
-                " ELSE SELECT 0";*/
-            string insertQuery = " IF EXISTS (select * from CA_RequestLineDetails where (ReqNo = @ReqNo and LineId = @LineId)) \n\r" +
-              " BEGIN \n\r" +
-              "     update CA_RequestLineDetails set ItemCode = @ItemCode, Qntty = @Qntty, BillTo =@BillTo  ,RequestStts =@RequestStts ,RejectRsn = @RejectRsn,StatusFlag = @StatusFlag ,InternalNotes= @InternalNotes, SpclApprvl= @SpclApprvl where (ReqNo = @ReqNo and LineId = @LineId); \n\r" +
-              " END \n\r " +
-              " ELSE" +
-              " BEGIN \n\r" +
-              "     INSERT into CA_RequestLineDetails(ReqNo,LineId,ItemCode,Qntty,RequestStts, RejectRsn,BillTo, StatusFlag, InternalNotes, SpclApprvl) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts, @RejectRsn,@BillTo, @StatusFlag, @InternalNotes, @SpclApprvl) \n\r" +
-              " END  \n\r";
-            //"IF EXISTS (select * from CA_Log where (ReqNo = @ReqNo) and (LineId = @LineId))) \n\r"+
-            //"BEGIN \n\r"+
-            //"     update CA_Log set ItemCode = @ItemCode, Qntty = @Qntty, BillTo =@BillTo  ,RequestStts =@RequestStts ,RejectRsn = @RejectRsn,StatusFlag = @StatusFlag ,InternalNotes= @InternalNotes, EventKind='Update' where (ReqNo = @ReqNo and LineId = @LineId); \n\r" + 
-            //"END \n \r"+
-            //"ELSE \n\r" +
-            //"BEGIN \n\r"+
-            //"     INSERT INTO CA_Log(ReqNo,LineId,ItemCode,Qntty,RequestStts, RejectRsn,BillTo, StatusFlag, InternalNotes, EventKind) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts, @RejectRsn,@BillTo, @StatusFlag, @InternalNotes, 'Add') \n\r" +
-            //"END";
-            using (SqlConnection connection = new SqlConnection(connectionString))
-                while (count > 0 && count > 3)
-                {
-                    DataRow row = dt.Rows[mone];
-                    try
+            try
+            {
+                File.AppendAllText(@"C:\carmel\logs\download.txt", "Inside CA_RequestLineDetailsPs: " + DateTime.Now.ToString() + Environment.NewLine);
+                int count = dt.Rows.Count, mone = 0;
+                string connectionString = m_ConnectionString;
+                // https://stackoverflow.com/questions/9648934/insert-into-if-not-exists-sql-server
+                /* string insertQuery = " IF NOT EXISTS (select * from CA_RequestLineDetails_temp where ReqNo = @ReqNo) \n\r" +
+                    " BEGIN \n\r" +
+                    "     INSERT into CA_RequestLineDetails_temp(ReqNo,LineId,ItemCode,Qntty,RequestStts,RejectRsn,BillTo) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts,@RejectRsn,@BillTo) \n\r" +
+                    " END \n\r " +
+                    " ELSE SELECT 0";*/
+                string insertQuery = " IF EXISTS (select * from CA_RequestLineDetails where (ReqNo = @ReqNo and LineId = @LineId)) \n\r" +
+                  " BEGIN \n\r" +
+                  "     update CA_RequestLineDetails set ItemCode = @ItemCode, Qntty = @Qntty, BillTo =@BillTo  ,RequestStts =@RequestStts ,RejectRsn = @RejectRsn,StatusFlag = @StatusFlag ,InternalNotes= @InternalNotes, SpclApprvl= @SpclApprvl, TimeStamp= @TimeStamp where (ReqNo = @ReqNo and LineId = @LineId); \n\r" +
+                  " END \n\r " +
+                  " ELSE" +
+                  " BEGIN \n\r" +
+                  "     INSERT into CA_RequestLineDetails(ReqNo,LineId,ItemCode,Qntty,RequestStts, RejectRsn,BillTo, StatusFlag, InternalNotes, SpclApprvl, TimeStamp) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts, @RejectRsn,@BillTo, @StatusFlag, @InternalNotes, @SpclApprvl, @TimeStamp) \n\r" +
+                  " END  \n\r";
+                //"IF EXISTS (select * from CA_Log where (ReqNo = @ReqNo) and (LineId = @LineId))) \n\r"+
+                //"BEGIN \n\r"+
+                //"     update CA_Log set ItemCode = @ItemCode, Qntty = @Qntty, BillTo =@BillTo  ,RequestStts =@RequestStts ,RejectRsn = @RejectRsn,StatusFlag = @StatusFlag ,InternalNotes= @InternalNotes, EventKind='Update' where (ReqNo = @ReqNo and LineId = @LineId); \n\r" + 
+                //"END \n \r"+
+                //"ELSE \n\r" +
+                //"BEGIN \n\r"+
+                //"     INSERT INTO CA_Log(ReqNo,LineId,ItemCode,Qntty,RequestStts, RejectRsn,BillTo, StatusFlag, InternalNotes, EventKind) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts, @RejectRsn,@BillTo, @StatusFlag, @InternalNotes, 'Add') \n\r" +
+                //"END";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                    while (count > 0 && count > 3)
                     {
-                        CA_LogPs(dt, mone);
-                    }
-                    catch (Exception ex)
-                    {
-                        File.AppendAllText(@"C:\Carmel\download.txt", "FAIL CA_LogPs ex: " + ex + Environment.NewLine);
-                    }
-
-                    count = count - 3;
-                    using (SqlCommand command = new SqlCommand(insertQuery, connection))
-                    {
-                        // define your parameters ONCE outside the loop, and use EXPLICIT typing
-                        command.Parameters.Add("@ReqNo", SqlDbType.Int);
-                        command.Parameters.Add("@LineId", SqlDbType.Int);
-                        command.Parameters.Add("@ItemCode", SqlDbType.NVarChar);
-                        command.Parameters.Add("@Qntty", SqlDbType.Float);
-                        command.Parameters.Add("@RequestStts", SqlDbType.NVarChar);
-                        command.Parameters.Add("@RejectRsn", SqlDbType.NVarChar);
-                        command.Parameters.Add("@BillTo", SqlDbType.Int);
-                        command.Parameters.Add("@InternalNotes", SqlDbType.NVarChar);
-                        /* command.Parameters.Add("@JCNum", SqlDbType.Int);
-                         command.Parameters.Add("@RjctMsg", SqlDbType.NVarChar);*/
-                        command.Parameters.Add("@StatusFlag", SqlDbType.Int);
-                        command.Parameters.Add("@SpclApprvl", SqlDbType.NVarChar);
-                        //command.Parameters.Add("@Timestamp", SqlDbType.DateTime);
-                        // command.Parameters.Add("@Docentry", SqlDbType.Int);
-                        //command.Parameters.Add("@SBOLineId", SqlDbType.Int);
-                        connection.Open();
-                        //     for (int t = 0; t < row.ItemArray.Count()-2; t++)
-
-                        for (int t = mone; t < (mone + 3); t++)
+                        DataRow row = dt.Rows[mone];
+                        try
                         {
-                            //  SET the values
-                            try
-                            {
-                                command.Parameters["@ReqNo"].Value = int.Parse((dt.Rows[t][0]).ToString());
-                                command.Parameters["@LineId"].Value = int.Parse((dt.Rows[t][1]).ToString());
-                            }
-                            catch //if ReqNo or LineId are empty do not insert the line
-                            {
-                                continue;
-                            }
-                            command.Parameters["@ItemCode"].Value = (dt.Rows[t][2]).ToString();
-                            //command.Parameters["@Qntty"].Value = int.Parse((dt.Rows[t][3]).ToString());
-                            command.Parameters["@Qntty"].Value = float.Parse((dt.Rows[t][3]).ToString());
-                            command.Parameters["@RequestStts"].Value = (dt.Rows[t][4]).ToString();
-                            command.Parameters["@RejectRsn"].Value = (dt.Rows[t][5]).ToString();
-                            try
-                            {
-                                command.Parameters["@BillTo"].Value = int.Parse((dt.Rows[t][6]).ToString());
-                            }
-                            catch
-                            {
-                                command.Parameters["@BillTo"].Value = 0;
-                            }
-                            //command.Parameters["@BillTo"].Value = int.Parse((dt.Rows[t][6]).ToString());
-                            command.Parameters["@InternalNotes"].Value = (dt.Rows[t][7]).ToString();
-                            /* command.Parameters["@JCNum"].Value = int.Parse((dt.Rows[t][7]).ToString());
-                             command.Parameters["@RjctMsg"].Value = (dt.Rows[t][8]).ToString();*/
-                            command.Parameters["@StatusFlag"].Value = int.Parse((dt.Rows[t][8]).ToString());
-                            command.Parameters["@SpclApprvl"].Value = (dt.Rows[t][9]).ToString();
-                            //command.Parameters["@Timestamp"].Value = DateTime.Parse(dt.Rows[t][10].ToString());
-                            //command.Parameters["@Docentry"].Value = int.Parse((dt.Rows[t][7]).ToString());
-                            //command.Parameters["@SBOLineId"].Value = int.Parse((dt.Rows[t][8]).ToString());
-                            try
-                            {
-                                File.AppendAllText(@"C:\Carmel\download.txt", Environment.NewLine + "query params: ReqNo = " + (dt.Rows[t][0]).ToString() + Environment.NewLine +
-                                                                                             "LineId = " + (dt.Rows[t][1]).ToString() + Environment.NewLine +
-                                                                                             "ItemCode = " + (dt.Rows[t][2]).ToString() + Environment.NewLine +
-                                                                                             "Qntty = " + (dt.Rows[t][3]).ToString() + Environment.NewLine +
-                                                                                             "RequestStts = " + (dt.Rows[t][4]).ToString() + Environment.NewLine +
-                                                                                             "RejectRsn = " + (dt.Rows[t][5]).ToString() + Environment.NewLine +
-                                                                                             "BillTo = 0" + Environment.NewLine +
-                                                                                             "InternalNotes = " + (dt.Rows[t][7]).ToString() + Environment.NewLine + Environment.NewLine);
-                                File.AppendAllText(@"C:\Carmel\download.txt", "before run inserQuery" + Environment.NewLine);
-                                command.ExecuteNonQuery();
-                                File.AppendAllText(@"C:\Carmel\download.txt", "after run inserQuery" + Environment.NewLine);
-                            }
-                            catch (Exception ex)
-                            {
-                                File.AppendAllText(@"C:\Carmel\download.txt", "FAIL exec inserQuery - CA_RequestLineDetails ex: " + ex + Environment.NewLine);
-                            }
+                            CA_LogPs(dt, mone);
                         }
-                        connection.Close();
-                    }
-                    mone = mone + 3;
-                }
-            if (count > 0)
-                //יש פחות שורות מ3 ולכן ישלחו אחת אחרי השניה
+                        catch (Exception ex)
+                        {
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL CA_LogPs  ::Date: " + DateTime.Now.ToString() + "; ex: " + ex + Environment.NewLine);
+                        }
 
-                AddIntoPsRequestLineDetails(dt, count);
+                        count = count - 3;
+                        File.AppendAllText(@"C:\carmel\logs\download.txt", "Inside CA_RequestLineDetailsPs BEFORE USING SQL: " + DateTime.Now.ToString() + Environment.NewLine);
+                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                        {
+                            // define your parameters ONCE outside the loop, and use EXPLICIT typing
+                            command.Parameters.Add("@ReqNo", SqlDbType.Int);
+                            command.Parameters.Add("@LineId", SqlDbType.Int);
+                            command.Parameters.Add("@ItemCode", SqlDbType.NVarChar);
+                            command.Parameters.Add("@Qntty", SqlDbType.Float);
+                            command.Parameters.Add("@RequestStts", SqlDbType.NVarChar);
+                            command.Parameters.Add("@RejectRsn", SqlDbType.NVarChar);
+                            command.Parameters.Add("@BillTo", SqlDbType.Int);
+                            command.Parameters.Add("@InternalNotes", SqlDbType.NVarChar);
+                            /* command.Parameters.Add("@JCNum", SqlDbType.Int);
+                             command.Parameters.Add("@RjctMsg", SqlDbType.NVarChar);*/
+                            command.Parameters.Add("@StatusFlag", SqlDbType.Int);
+                            command.Parameters.Add("@SpclApprvl", SqlDbType.NVarChar);
+                            command.Parameters.Add("@Timestamp", SqlDbType.DateTime);
+                            // command.Parameters.Add("@Docentry", SqlDbType.Int);
+                            //command.Parameters.Add("@SBOLineId", SqlDbType.Int);
+                            connection.Open();
+                            //     for (int t = 0; t < row.ItemArray.Count()-2; t++)
+
+                            for (int t = mone; t < (mone + 3); t++)
+                            {
+                                //  SET the values
+                                try
+                                {
+                                    command.Parameters["@ReqNo"].Value = int.Parse((dt.Rows[t][0]).ToString());
+                                    command.Parameters["@LineId"].Value = int.Parse((dt.Rows[t][1]).ToString());
+                                }
+                                catch //if ReqNo or LineId are empty do not insert the line
+                                {
+                                    continue;
+                                }
+                                command.Parameters["@ItemCode"].Value = (dt.Rows[t][2]).ToString();
+                                //command.Parameters["@Qntty"].Value = int.Parse((dt.Rows[t][3]).ToString());
+                                command.Parameters["@Qntty"].Value = float.Parse((dt.Rows[t][3]).ToString());
+                                command.Parameters["@RequestStts"].Value = (dt.Rows[t][4]).ToString();
+                                command.Parameters["@RejectRsn"].Value = (dt.Rows[t][5]).ToString();
+                                try
+                                {
+                                    command.Parameters["@BillTo"].Value = int.Parse((dt.Rows[t][6]).ToString());
+                                }
+                                catch
+                                {
+                                    command.Parameters["@BillTo"].Value = 0;
+                                }
+                                //command.Parameters["@BillTo"].Value = int.Parse((dt.Rows[t][6]).ToString());
+                                command.Parameters["@InternalNotes"].Value = (dt.Rows[t][7]).ToString();
+                                /* command.Parameters["@JCNum"].Value = int.Parse((dt.Rows[t][7]).ToString());
+                                 command.Parameters["@RjctMsg"].Value = (dt.Rows[t][8]).ToString();*/
+                                command.Parameters["@StatusFlag"].Value = int.Parse((dt.Rows[t][8]).ToString());
+                                command.Parameters["@SpclApprvl"].Value = (dt.Rows[t][9]).ToString();
+                                command.Parameters["@Timestamp"].Value = DateTime.Parse(dt.Rows[t][10].ToString());
+                                //command.Parameters["@Docentry"].Value = int.Parse((dt.Rows[t][7]).ToString());
+                                //command.Parameters["@SBOLineId"].Value = int.Parse((dt.Rows[t][8]).ToString());
+                                try
+                                {
+                                    File.AppendAllText(@"C:\Carmel\logs\download.txt", Environment.NewLine + "::Date : " + DateTime.Now.ToString() + "query params: ReqNo = " + (dt.Rows[t][0]).ToString() + Environment.NewLine +
+                                                                                                 "LineId = " + (dt.Rows[t][1]).ToString() + Environment.NewLine +
+                                                                                                 "ItemCode = " + (dt.Rows[t][2]).ToString() + Environment.NewLine +
+                                                                                                 "Qntty = " + (dt.Rows[t][3]).ToString() + Environment.NewLine +
+                                                                                                 "RequestStts = " + (dt.Rows[t][4]).ToString() + Environment.NewLine +
+                                                                                                 "StatusFlag = " + (dt.Rows[t][8]).ToString() + Environment.NewLine +
+                                                                                                 "RejectRsn = " + (dt.Rows[t][5]).ToString() + Environment.NewLine +
+                                                                                                 "BillTo = " + (dt.Rows[t][6]).ToString() + Environment.NewLine +
+                                                                                                 "InternalNotes = " + (dt.Rows[t][7]).ToString() + Environment.NewLine + Environment.NewLine);
+                                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "before run inserQuery::Date : " + DateTime.Now.ToString() + Environment.NewLine);
+                                    command.ExecuteNonQuery();
+                                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "after run inserQuery::Date : " + DateTime.Now.ToString() + Environment.NewLine);
+                                }
+                                catch (Exception ex)
+                                {
+                                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL exec inserQuery - CA_RequestLineDetails ::Date : " + DateTime.Now.ToString() + "; ex: " + ex + Environment.NewLine);
+                                }
+                            }
+                            connection.Close();
+                        }
+                        mone = mone + 3;
+                    }
+                if (count > 0)
+                //יש פחות שורות מ3 ולכן ישלחו אחת אחרי השניה
+                {
+                    File.AppendAllText(@"C:\carmel\logs\download.txt", "Inside IF less than 3 lines: " + DateTime.Now.ToString() + Environment.NewLine);
+                    AddIntoPsRequestLineDetails(dt, count);
+                }
+                   // AddIntoPsRequestLineDetails(dt, count);
+
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "FAIL CA_RequestLineDetails ::Date : " + DateTime.Now.ToString() + "; ex: " + ex + Environment.NewLine);
+            }
         }
         public static void CA_LogPs(DataTable dt, int NumOfRow)
         {
@@ -1144,11 +1187,11 @@ namespace DownLoadUpLoadDataService
                 //https://stackoverflow.com/questions/9648934/insert-into-if-not-exists-sql-server
                 var insertQuery = " IF EXISTS (select * from CA_Log where ReqNo = @ReqNo and LineId = @LineId) \n\r" +
                " BEGIN \n\r" +
-               "     update CA_Log set ItemCode = @ItemCode, Qntty =@Qntty, BillTo =@BillTo  ,RequestStts =@RequestStts ,RejectRsn = @RejectRsn, StatusFlag = @StatusFlag,InternalNotes= @InternalNotes, EventKind = 'Update', SpclApprvl=@SpclApprvl where (ReqNo = @ReqNo and LineId = @LineId); \n\r" +
+               "     update CA_Log set ItemCode = @ItemCode, Qntty =@Qntty, BillTo =@BillTo  ,RequestStts =@RequestStts ,RejectRsn = @RejectRsn, StatusFlag = @StatusFlag,InternalNotes= @InternalNotes, EventKind = 'Update', SpclApprvl=@SpclApprvl, TimeStamp= @TimeStamp where (ReqNo = @ReqNo and LineId = @LineId); \n\r" +
                " END \n\r " +
                " ELSE" +
                " BEGIN \n\r" +
-               "     INSERT into CA_Log(ReqNo,LineId,ItemCode,Qntty,RequestStts, RejectRsn,BillTo,StatusFlag, InternalNotes, EventKind, SpclApprvl) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts,@RejectRsn,@BillTo,@StatusFlag,@InternalNotes, 'Add', @SpclApprvl) \n\r" +
+               "     INSERT into CA_Log(ReqNo,LineId,ItemCode,Qntty,RequestStts, RejectRsn,BillTo,StatusFlag, InternalNotes, EventKind, SpclApprvl, TimeStamp) VALUES(@ReqNo,@LineId,@ItemCode,@Qntty,@RequestStts,@RejectRsn,@BillTo,@StatusFlag,@InternalNotes, 'Add', @SpclApprvl, @TimeStamp) \n\r" +
                " END";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -1168,7 +1211,7 @@ namespace DownLoadUpLoadDataService
                        command.Parameters.Add("@RjctMsg", SqlDbType.NVarChar);*/
                     command.Parameters.Add("@StatusFlag", SqlDbType.Int);
                     command.Parameters.Add("@SpclApprvl", SqlDbType.NVarChar);
-                    // command.Parameters.Add("@Timestamp", SqlDbType.DateTime);
+                    command.Parameters.Add("@Timestamp", SqlDbType.DateTime);
                     //command.Parameters.Add("@Docentry", SqlDbType.Int);
                     //command.Parameters.Add("@SBOLineId", SqlDbType.Int);
                     connection.Open();
@@ -1206,7 +1249,7 @@ namespace DownLoadUpLoadDataService
                             command.Parameters["@RjctMsg"].Value = (dt.Rows[t][8]).ToString();*/
                         command.Parameters["@StatusFlag"].Value = int.Parse((dt.Rows[t][8]).ToString());
                         command.Parameters["@SpclApprvl"].Value = (dt.Rows[t][9]).ToString();
-                        //   command.Parameters["@Timestamp"].Value = DateTime.Parse(dt.Rows[t][10].ToString());
+                        command.Parameters["@Timestamp"].Value = DateTime.Parse(dt.Rows[t][10].ToString());
                         //command.Parameters["@Docentry"].Value = int.Parse((dt.Rows[t][7]).ToString());
                         //command.Parameters["@SBOLineId"].Value = int.Parse((dt.Rows[t][8]).ToString());
                         command.ExecuteNonQuery();
@@ -1255,7 +1298,7 @@ namespace DownLoadUpLoadDataService
                             }
                             catch (Exception e)
                             {
-                                EventManager.WriteEventErrorMessage("failed to put values for CA_Files table", e);
+                                EventManager.WriteEventErrorMessage("failed to put values for CA_Files table ::Date: " + DateTime.Now.ToString() + ";", e);
                             }
                             try
                             {
@@ -1473,13 +1516,14 @@ namespace DownLoadUpLoadDataService
             string connectionString = m_ConnectionString;
             string RequestStts = "5";
             string EventKind = "'Delete'";
+
             //string deleteQuery = " IF EXISTS (select * from CA_RequestLineDetails where (ReqNo = @ReqNo and LineId = @LineId)) \n\r" +
             //                     " BEGIN \n\r" +
             //                     "     DELETE from CA_RequestLineDetails where (ReqNo = @ReqNo and LineId = @LineId) \n\r" +
             //                     " END \n\r ";
             string deleteQuery = " IF EXISTS (select * from CA_RequestLineDetails where (ReqNo = @ReqNo and LineId = @LineId)) \n\r" +
                                  " BEGIN \n\r" +
-                                 "     UPDATE CA_RequestLineDetails SET RequestStts = 5 where (ReqNo = @ReqNo and LineId = @LineId) \n\r" +
+                                 "     UPDATE CA_RequestLineDetails SET RequestStts = 5, StatusFlag = 0 where (ReqNo = @ReqNo and LineId = @LineId) \n\r" +
                                  " END \n\r " +
                                  " IF EXISTS (select * from CA_Log where (ReqNo = @ReqNo and LineId = @LineId)) \n\r" +
                                  " BEGIN \n\r" +
@@ -1498,7 +1542,7 @@ namespace DownLoadUpLoadDataService
                 }
                 catch (Exception e)
                 {
-                    File.AppendAllText(@"C:\Carmel\download.txt", "failed delete line, ex: " + e + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "failed delete line,::Date: " + DateTime.Now.ToString() + "; ex: " + e + Environment.NewLine);
                     EventManager.WriteEventErrorMessage("failed to open ConnectionString for CA_RequestLineDetails table", e);
                 }
                 try
@@ -1507,7 +1551,7 @@ namespace DownLoadUpLoadDataService
                 }
                 catch (Exception e)
                 {
-                    File.AppendAllText(@"C:\Carmel\download.txt", "failed close conn, ex: " + e + Environment.NewLine);
+                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "failed close conn,::Date : " + DateTime.Now.ToString() + "; ex: " + e + Environment.NewLine);
                     EventManager.WriteEventErrorMessage("failed to close ConnectionString for CA_RequestLineDetails table", e);
                 }
             }
@@ -1516,7 +1560,7 @@ namespace DownLoadUpLoadDataService
 
         public static string zipFiles(string path)
         {
-            File.AppendAllText(@"C:\Carmel\download.txt", "enter zipFiles" + Environment.NewLine);
+            File.AppendAllText(@"C:\Carmel\logs\download.txt", "enter zipFiles" + Environment.NewLine);
             //string zipPath = @"c:\Carmel\calldata.zip";
             Engine e = new Engine();
             string get = "";
@@ -1526,7 +1570,7 @@ namespace DownLoadUpLoadDataService
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail download zipFile, ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail download zipFile,::Date : " + DateTime.Now.ToString() + "; ex: " + ex + Environment.NewLine);
             }
             //string extractPath = @"C:\temp\callFiles";
             //string zipPath = @"c:\Carmel\calldata.zip";
@@ -1541,17 +1585,17 @@ namespace DownLoadUpLoadDataService
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail delete directory" + m_zipPath + " | ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail delete directory" + m_zipPath + " | ex: " + ex + Environment.NewLine);
             }
             try
             {
-                //ZipFile.ExtractToDirectory(@"C:\orly\calldata.zip", extractPath);
+                //ZipFile.ExtractToDirectory(@"C:\Carmel\logs\calldata.zip", extractPath);
                 // File.Copy(@"C:\Carmel\calldata.zip", @"C:\Carmel\zipBackups\");
                 ZipFile.ExtractToDirectory(@"C:\Carmel\calldata.zip", m_zipPath);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail extract zipFile, ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail extract zipFile, ex: " + ex + Environment.NewLine);
                 Directory.CreateDirectory(m_zipPath);
                 return "";
             }
@@ -1578,16 +1622,17 @@ namespace DownLoadUpLoadDataService
 
                 foreach (string subdir in orderExport)
                 {
+                    var destFileName = System.IO.Path.GetFileNameWithoutExtension(subdir);
                     try
                     {
-                        var destFileName = System.IO.Path.GetFileNameWithoutExtension(subdir);
-                        destFileName = destFileName + DateTime.Now.Day.ToString() + '-' + DateTime.Now.Month.ToString() + '-' + DateTime.Now.Year.ToString();
+                        destFileName = destFileName + '_' + DateTime.Now.Day.ToString() + '-' + DateTime.Now.Month.ToString() + '-' + DateTime.Now.Year.ToString() + '_' + DateTime.Now.Hour.ToString() + '-' + DateTime.Now.Minute.ToString() + '-' + DateTime.Now.Second.ToString();
+
                         destFileName = destFileName + '.' + System.IO.Path.GetExtension(subdir);
                         ZipFile.CreateFromDirectory(subdir, @"C:\Carmel\zipBackups\" + destFileName);
                     }
                     catch (Exception ex)
                     {
-                        File.AppendAllText(@"C:\Carmel\download.txt", "can't zip the directory " + subdir + " ex: " + ex + Environment.NewLine);
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "can't zip the directory " + subdir + " ex: " + ex + Environment.NewLine);
                     }
                     ReqNo = System.IO.Path.GetFileName(subdir);
                     ReqNo = ReqNo.Substring(6);
@@ -1595,22 +1640,22 @@ namespace DownLoadUpLoadDataService
                     foreach (string img in Directory.GetFiles(subdir))
                     {
                         int StatusFlag = 0;
-                        File.AppendAllText(@"C:\Carmel\download.txt", "enter foreach img" + Environment.NewLine);
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "enter foreach img" + Environment.NewLine);
 
                         string imgName = System.IO.Path.GetFileName(img);
-                        File.AppendAllText(@"C:\Carmel\download.txt", "imgName: " + imgName + Environment.NewLine);
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "imgName: " + imgName + Environment.NewLine);
                         //string line = imgName.Remove(imgName.Length - 4);
                         string line = imgName.Split('-')[1];
                         dr = dt.NewRow();
                         lineId = line;
-                        File.AppendAllText(@"C:\Carmel\download.txt", "lineId: " + lineId + Environment.NewLine);
+                        File.AppendAllText(@"C:\Carmel\logs\download.txt", "lineId: " + lineId + Environment.NewLine);
                         try
                         {
                             //lineId = "0";
                             dr[0] = ReqNo;
                             dr[1] = lineId;
                             dr[2] = ""; //description?
-                            dr[3] = img; //fileLink
+                            dr[3] = destFileName;//img; //fileLink
                             dr[4] = imgName; //fileName
                             dr[5] = DateTime.Today.ToString("dd-MM-yyyy");//currDate
                             dr[6] = DateTime.Now.ToString("HH:mm:ss");  //currTime
@@ -1621,7 +1666,7 @@ namespace DownLoadUpLoadDataService
                         }
                         catch (Exception ex)
                         {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "fail on pic: " + imgName + " ex: " + ex + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail on pic: " + imgName + " ex: " + ex + Environment.NewLine);
                         }
                     }
                     count = 0;
@@ -1629,7 +1674,7 @@ namespace DownLoadUpLoadDataService
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail foreach subdir; ex: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail foreach subdir; ex: " + ex + Environment.NewLine);
             }
 
             insertFiles(dt);
@@ -1638,16 +1683,84 @@ namespace DownLoadUpLoadDataService
 
         public static string insertFiles(DataTable dt)
         {
-            string insertQuery = " IF NOT EXISTS (select * from CA_Files where fileName = @fileName) \n\r" +
-  " BEGIN \n\r" +
-  "     INSERT into CA_Files(ReqNo,LineId,Descrptn,Filelink,FileName,AddDate,AddTime,StatusFlag) VALUES(@ReqNo,@LineId,@Descrptn,@Filelink,@FileName,@AddDate,@AddTime,@StatusFlag) \n\r" +
-  " END \n\r " +
-  " ELSE SELECT 0";
+            File.AppendAllText(@"C:\Carmel\logs\download.txt", "enter insertFiles" + Environment.NewLine);
+            int ReqNo, LineIds;
+            string filename;
+            //string deleteQuery = "IF EXISTS (select * from CA_Files where ReqNo=@ReqNo) BEGIN DELETE from CA_Files where ReqNo=@ReqNo END";
+            string deleteQuery = "IF EXISTS (select * from CA_Files where fileName=@fileName) BEGIN DELETE from CA_Files where fileName=@fileName END";
+            using (SqlConnection con = new SqlConnection(m_ConnectionString))
+            {
+                int s = 0, countS = dt.Rows.Count;
+                //changed 2/7/19 by Yura Korovkin - while production
+                //while (dt.Rows.Count > 0 && countS > 0)
+                {
+                    countS--;
+                    File.AppendAllText(@"C:\Carmel\logs\download.txt", "dt.Rows.Count= " + dt.Rows.Count  + Environment.NewLine);
+                    using (SqlCommand cmd = new SqlCommand(deleteQuery, con))
+                    {
+                        try
+                        {
+                            DataRow row = dt.Rows[s++];
+                            ReqNo = int.Parse(row[0].ToString());
+                            //LineIds = int.Parse(row[1].ToString());
+                            filename = row[4].ToString();
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "row[1].ToString()= " + row[1].ToString() + " row[2].ToString(): " + row[2].ToString() + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "row[3].ToString()= " + row[3].ToString() + " row[5].ToString(): " + row[5].ToString() + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "ReqNo= " + ReqNo + " filename: " + filename + Environment.NewLine);
+                            //File.AppendAllText(@"C:\Carmel\logs\download.txt", "in cmd: ReqNo=" + ReqNo + ", LineId=" + LineId + ", Desc=" + Descrptn + ", fileLink=" + Filelink + ", fileName=" + FileName + Environment.NewLine);
+                            //cmd.CommandType = CommandType.StoredProcedure;
+                            //cmd.Parameters.Add("@ReqNo", SqlDbType.Int).Value = ReqNo;
+                            //cmd.Parameters.Add("@LineId", SqlDbType.Int).Value = LineIds;
+
+
+                            //changed 2/7/19 by Yura Korovkin - while production
+                            //cmd.Parameters.Add("@LineId", SqlDbType.NVarChar).Value = filename;
+                            cmd.Parameters.Add("@FileName", SqlDbType.NVarChar).Value = filename;
+                        }
+                        catch (Exception e)
+                        {
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail delete all old req pics in CA_Files table, ex: " + e + Environment.NewLine);
+                            EventManager.WriteEventErrorMessage("failed to delete all old req pics in CA_Files table", e);
+                        }
+                        try
+                        {
+                            con.Open();
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "befor deleting old imgs" + Environment.NewLine);
+                            cmd.ExecuteNonQuery();
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "after deleting old imgs" + Environment.NewLine);
+                        }
+                        catch (Exception e)
+                        {
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "failed to open ConnectionString for delete in CA_Files table. ex: " + e + Environment.NewLine);
+                            EventManager.WriteEventErrorMessage("failed to open ConnectionString for delete in CA_Files table", e);
+                        }
+                        try
+                        {
+                            con.Close();
+                        }
+                        catch (Exception e)
+                        {
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "failed to close ConnectionString for delete in  CA_Files table. ex: " + e + Environment.NewLine);
+                            EventManager.WriteEventErrorMessage("failed to close ConnectionString for delete in  CA_Files table", e);
+                        }
+                    }
+                }
+            }
+
+
+
+            string insertQuery = " IF NOT EXISTS (select * from CA_Files where fileName = @fileName) \n\r" +//" IF NOT EXISTS (select * from CA_Files where fileName = @fileName) \n\r" +
+" BEGIN \n\r" +
+//"DELETE from CA_Files where fileName = @fileName \n\r" +
+"     INSERT into CA_Files(ReqNo,LineId,Descrptn,Filelink,FileName,AddDate,AddTime,StatusFlag) VALUES(@ReqNo,@LineId,@Descrptn,@Filelink,@FileName,@AddDate,@AddTime,@StatusFlag) \n\r" +
+" END \n\r " +
+" ELSE SELECT 0";
             int i = 0, count = dt.Rows.Count;
             DateTime d = new DateTime(1753, 10, 10); //deafult
-            int ReqNo, LineId, StatusFlag;//EstCost
-            string Descrptn, Filelink, FileName;
-            DateTime AddDate, AddTime; ;
+            int LineId, StatusFlag;//EstCost
+            string Descrptn, Filelink, FileName, AddTime;
+            DateTime AddDate;
+
             while (dt.Rows.Count > 0 && count > 0)
             {
                 count--;
@@ -1656,10 +1769,11 @@ namespace DownLoadUpLoadDataService
                 ReqNo = int.Parse(row[0].ToString());
                 LineId = int.Parse(row[1].ToString());
                 Descrptn = row[2].ToString();
-                Filelink = row[3].ToString();
+                Filelink = @"C:\Carmel\zipBackups\" + row[3].ToString();
                 FileName = row[4].ToString();
                 AddDate = DateTime.Parse(row[5].ToString());
-                AddTime = DateTime.Parse(row[6].ToString());
+                //AddTime = DateTime.Parse(row[6].ToString());
+                AddTime = row[6].ToString();
                 StatusFlag = int.Parse(row[7].ToString());
                 // EventManager.WriteEventInfoMessage("start ConnectionString to db for CA_Files table");
                 using (SqlConnection con = new SqlConnection(m_ConnectionString))
@@ -1668,7 +1782,7 @@ namespace DownLoadUpLoadDataService
                     {
                         try
                         {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "in cmd: ReqNo=" + ReqNo + ", LineId=" + LineId + ", Desc=" + Descrptn + ", fileLink=" + Filelink + ", fileName=" + FileName + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "in cmd: ReqNo=" + ReqNo + ", LineId=" + LineId + ", Desc=" + Descrptn + ", fileLink=" + Filelink + ", fileName=" + FileName + Environment.NewLine);
                             //cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.Add("@ReqNo", SqlDbType.Int).Value = ReqNo;
                             cmd.Parameters.Add("@LineId", SqlDbType.Int).Value = LineId;
@@ -1676,12 +1790,12 @@ namespace DownLoadUpLoadDataService
                             cmd.Parameters.Add("@Filelink", SqlDbType.NText).Value = Filelink;
                             cmd.Parameters.Add("@FileName", SqlDbType.NVarChar).Value = FileName;
                             cmd.Parameters.Add("@AddDate", SqlDbType.DateTime).Value = AddDate;
-                            cmd.Parameters.Add("@AddTime", SqlDbType.DateTime).Value = AddTime;
+                            cmd.Parameters.Add("@AddTime", SqlDbType.NVarChar).Value = AddTime;
                             cmd.Parameters.Add("@StatusFlag", SqlDbType.Int).Value = StatusFlag;
                         }
                         catch (Exception e)
                         {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "fail on line: " + ReqNo + "-" + LineId + " ex: " + e + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail on line: " + ReqNo + "-" + LineId + " ex: " + e + Environment.NewLine);
                             EventManager.WriteEventErrorMessage("failed to put values for CA_Files table", e);
                         }
                         try
@@ -1691,7 +1805,7 @@ namespace DownLoadUpLoadDataService
                         }
                         catch (Exception e)
                         {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "failed to open ConnectionString for CA_Files table. ex: " + e + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "failed to open ConnectionString for CA_Files table. ex: " + e + Environment.NewLine);
                             EventManager.WriteEventErrorMessage("failed to open ConnectionString for CA_Files table", e);
                         }
                         try
@@ -1700,13 +1814,13 @@ namespace DownLoadUpLoadDataService
                         }
                         catch (Exception e)
                         {
-                            File.AppendAllText(@"C:\Carmel\download.txt", "failed to close ConnectionString for CA_Files table. ex: " + e + Environment.NewLine);
+                            File.AppendAllText(@"C:\Carmel\logs\download.txt", "failed to close ConnectionString for CA_Files table. ex: " + e + Environment.NewLine);
                             EventManager.WriteEventErrorMessage("failed to close ConnectionString for CA_Files table", e);
                         }
                     }
                 }
             }
-
+            File.AppendAllText(@"C:\Carmel\logs\download.txt", "exit insertFiles" + Environment.NewLine);
             return "";
         }
 
@@ -1719,8 +1833,8 @@ namespace DownLoadUpLoadDataService
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail delete Zipfile: " + ex + Environment.NewLine);
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail delete Zipfile inner excep: " + ex.InnerException + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail delete Zipfile: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail delete Zipfile inner excep: " + ex.InnerException + Environment.NewLine);
             }
             // Create a request using a URL that can receive a post. 
             request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -1767,11 +1881,11 @@ namespace DownLoadUpLoadDataService
             }
             catch (WebException we)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail copy files: " + we + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail copy files: " + we + Environment.NewLine);
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\Carmel\download.txt", "fail copy files: " + ex + Environment.NewLine);
+                File.AppendAllText(@"C:\Carmel\logs\download.txt", "fail copy files: " + ex + Environment.NewLine);
             }
             //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             //response.Cookies = request.CookieContainer.GetCookies(request.RequestUri);
